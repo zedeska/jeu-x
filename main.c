@@ -3,16 +3,38 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #define KRED  "\x1B[31m"
 #define KBLU  "\x1B[34m"
 #define RESET "\x1B[0m"
+
+bool isEven(int a)
+{
+    if (a % 2 == 0)
+    {
+        return true;
+    } else
+    {
+        return false;
+    }
+}
 
 void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
 {
     printf("\n");
     for (int i = 0; i < lignes; i++)
     {
+        for (int l = 0; l < colonnes; l++)
+        {
+            printf("----");
+            if (l == colonnes-1)
+            {
+                printf("-");
+            }
+        }
+        printf("\n");
+
         for (int y = 0; y < colonnes; y++)
         {
             printf("|");
@@ -25,7 +47,7 @@ void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
                 printf(" %s%d " RESET, KBLU,tableau[i][y][1]);
             } else
             {
-                printf(" %d ", tableau[i][y][1]);
+                printf("   ", tableau[i][y][1]);
             }
             
             if (y == colonnes-1)
@@ -35,7 +57,17 @@ void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
             
         }
     }
-    printf("\n");
+
+    for (int l = 0; l < colonnes; l++)
+    {
+        printf("----");
+        if (l == colonnes-1)
+        {
+            printf("-");
+        }
+    }
+
+    printf("\n\n");
 }
 
 void findEmpty(int lignes, int colonnes, int tableau[lignes][colonnes][2], int vide[2])
@@ -53,7 +85,7 @@ void findEmpty(int lignes, int colonnes, int tableau[lignes][colonnes][2], int v
     }
 }
 
-int pointCounter(int lignes, int colonnes, int tableau[lignes][colonnes][2], int points[2], int vide[2])
+void pointCounter(int lignes, int colonnes, int tableau[lignes][colonnes][2], int points[2], int vide[2])
 {
     int comb[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
 
@@ -70,8 +102,6 @@ int pointCounter(int lignes, int colonnes, int tableau[lignes][colonnes][2], int
             }
         }
     }
-    
-    return 0;
 }
 
 
@@ -82,21 +112,53 @@ int main()
     int jeton = 1;
 
     //int lignes,colonnes = 0;
+    
+    while (1)
+    {
+        fflush(stdin);
+        system("cls");
 
-    system("cls");
+        printf("Bienvenue sur le jeu X !!1!11!!1!!1 OMG\nCe jeu est joué à 2 joueurs (J1 rouge, J2 bleu).\n");
+        printf("\nVeuillez entrer le nombres de lignes : ");
+    
+        if (scanf(" %d", &lignes) == 1)
+        {
+            if (isEven(lignes))
+            {
+                printf("Le numéro doit être impair.\n");
+                Sleep(2000);
+            } else
+            {
+                printf("\nEt de colonnes : ");
 
-    printf("Bienvenue sur le jeu X !!1!11!!1!!1\nCe jeu est joué à 2 joueurs (J1 bleu, J2 rouge).\n");
-    printf("\nVeuillez entrer le nombres de lignes : ");
-    scanf("%d", &lignes);
-    printf("\nEt de colonnes : ");
-    scanf("%d", &colonnes);
+                if (scanf(" %d", &colonnes) == 1)
+                {
+                    if (isEven(colonnes))
+                    {
+                        printf("Le numéro doit être impair.\n");
+                        Sleep(2000);
+                    } else
+                    {
+                        break;
+                    }
+                } else{
+                    printf("\nLe numéro saisi est incorrect.");
+                    Sleep(2000);
+                }
+            }
+        } else
+        {
+            printf("\nLe numéro saisi est incorrect.");
+            Sleep(2000);
+        }
+    }
 
     int tableau[lignes][colonnes][2];
     memset(tableau, 0 , lignes*colonnes*2*sizeof(int));
     tour = (lignes * colonnes - 1) / 2;
 
     printf("\nChaque joueur a %d jetons.", tour);
-    Sleep(3000);
+    Sleep(2000);
     
     //printf("%d, %d", lignes, colonnes);
     //tableau[0][0] = 1;
@@ -117,21 +179,35 @@ int main()
 
             while (1)
             {
-                printf("C'est au joueur %d.\nDonnez la ligne de la case : ", turn);
-                scanf("%d", &case_ligne);
-                printf("\n La colonne : ");
-                scanf("%d", &case_colonne);
+                fflush(stdin);
+                system("cls");
+                arrayPrint(lignes, colonnes, tableau);
 
-                if (tableau[case_ligne-1][case_colonne-1][0] != 0)
+                printf("C'est au joueur %d.\nDonnez la ligne de la case : ", turn);
+                if (scanf("%d", &case_ligne) != 1)
                 {
-                    system("cls");
-                    arrayPrint(lignes, colonnes, tableau);
-                    printf("La case n'est pas vide.\n");
-                } else if (case_ligne > lignes || case_colonne > colonnes)
+                    printf("Le numéro saisi est incorrect.\n");
+                    Sleep(1000);
+                    continue;
+                }
+
+                printf("\n La colonne : ");
+                
+                if (scanf("%d", &case_colonne) != 1)
                 {
-                    system("cls");
-                    arrayPrint(lignes, colonnes, tableau);
+                    printf("Le numéro saisi est incorrect.\n");
+                    Sleep(1000);
+                    continue;
+                }
+                
+                if (case_ligne > lignes || case_colonne > colonnes)
+                {
                     printf("La position sort du tableau.\n");
+                    Sleep(1000);
+                } else if (tableau[case_ligne-1][case_colonne-1][0] != 0)
+                {
+                    printf("La case n'est pas vide.\n");
+                    Sleep(1000);
                 } else
                 {
                     break;
@@ -153,7 +229,8 @@ int main()
     findEmpty(lignes, colonnes, tableau, vide);
     pointCounter(lignes, colonnes, tableau, points, vide);
 
-    printf("\n le joueur 1 a : %d points\n le joueur 2 a : %d points", points[0], points[1]);
+    printf("\nLe joueur 1 a : %d points\nle joueur 2 a : %d points\n", points[0], points[1]);
+    printf("Le joueur %d remporte la partie !\n", (points[0] < points[1]) ? 1 : 2);
     
     return 0;
 }
