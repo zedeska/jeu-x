@@ -230,7 +230,16 @@ int main()
     pointCounter(lignes, colonnes, tableau, points, vide);
 
     printf("\nLe joueur 1 a : %d points\nle joueur 2 a : %d points\n", points[0], points[1]);
-    printf("Le joueur %d remporte la partie !\n", (points[0] < points[1]) ? 1 : 2);
+
+    if (points[0] > points[1]) {
+        printf("Le joueur 1 remporte la partie !\n");
+    } else if (points[0] < points[1]) {
+        printf("Le joueur 2 remporte la partie !\n");
+    } else if (points[0] == points[1]) {
+        printf("Egalité ! Les  2 joueurs gagnet !\n");
+    }
     
+    system("pause");
+
     return 0;
 }
