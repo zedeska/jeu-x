@@ -229,7 +229,7 @@ int main()
     findEmpty(lignes, colonnes, tableau, vide);
     pointCounter(lignes, colonnes, tableau, points, vide);
 
-    printf("\nLe joueur 1 a : %d points\nle joueur 2 a : %d points\n", points[0], points[1]);
+    printf("Le joueur 1 a : %d points\nle joueur 2 a : %d points\n", points[0], points[1]);
 
     if (points[0] > points[1]) {
         printf("Le joueur 1 remporte la partie !\n");
