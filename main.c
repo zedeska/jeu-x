@@ -123,7 +123,10 @@ int main()
     
         if (scanf(" %d", &lignes) == 1)
         {
-            if (isEven(lignes))
+            if (lignes < 0 || lignes == 0 || lignes == 1) {
+                printf("Le numéro doit être positif et supérieur à 1.\n");
+                Sleep(2000);
+            } else if (isEven(lignes))
             {
                 printf("Le numéro doit être impair.\n");
                 Sleep(2000);
@@ -133,7 +136,10 @@ int main()
 
                 if (scanf(" %d", &colonnes) == 1)
                 {
-                    if (isEven(colonnes))
+                    if (colonnes < 0 || colonnes == 0 || colonnes == 1) {
+                        printf("Le numéro doit être positif et supérieur à 1.\n");
+                    Sleep(2000);
+                    } else if (isEven(colonnes))
                     {
                         printf("Le numéro doit être impair.\n");
                         Sleep(2000);
