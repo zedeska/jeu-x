@@ -11,6 +11,7 @@
 
 bool isEven(int a)
 /* Fonction servant à savoir si le paramètre a est pair ou non */
+/* Fonction servant à savoir si le paramètre a est pair ou non */
 {
     if (a % 2 == 0)
     {
@@ -23,12 +24,17 @@ bool isEven(int a)
 
 void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
 /* Fonction permettant d'afficher le tableau dans le terminal */
+/* Fonction permettant d'afficher le tableau dans le terminal */
 {
     printf("\n");
     for (int i = 0; i < lignes; i++) // on parcours chaques lignes
+    for (int i = 0; i < lignes; i++) // on parcours chaques lignes
     {
         for (int l = 0; l < colonnes; l++) // et chaques colonnes
+        for (int l = 0; l < colonnes; l++) // et chaques colonnes
         {
+            printf("----"); // pour la déco (séparateur de lignes)
+            if (l == colonnes-1) // condition pour la déco
             printf("----"); // pour la déco (séparateur de lignes)
             if (l == colonnes-1) // condition pour la déco
             {
@@ -42,18 +48,23 @@ void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
             printf("|");
 
             if (tableau[i][y][0] == 1) // si la case "appartient" au joueur 1, on affiche son jeton en rouge
+            if (tableau[i][y][0] == 1) // si la case "appartient" au joueur 1, on affiche son jeton en rouge
             {
                 printf(" %s%d " RESET, KRED,tableau[i][y][1]);
 
             } else if (tableau[i][y][0] == 2) // si la case "appartient" au joueur 2, on affiche son jeton en bleu
+
+            } else if (tableau[i][y][0] == 2) // si la case "appartient" au joueur 2, on affiche son jeton en bleu
             {
                 printf(" %s%d " RESET, KBLU,tableau[i][y][1]);
+
 
             } else
             {
                 printf("   ", tableau[i][y][1]);
             }
             
+            if (y == colonnes-1) // pour la déco, si on arrive à la fin de la colonnes, print un pipe
             if (y == colonnes-1) // pour la déco, si on arrive à la fin de la colonnes, print un pipe
             {
                 printf("|\n");
@@ -62,6 +73,7 @@ void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
         }
     }
 
+    for (int l = 0; l < colonnes; l++) // afficer la dernière ligne de tirets
     for (int l = 0; l < colonnes; l++) // afficer la dernière ligne de tirets
     {
         printf("----");
@@ -75,6 +87,7 @@ void arrayPrint(int lignes, int colonnes, int tableau[lignes][colonnes][2])
 }
 
 void findEmpty(int lignes, int colonnes, int tableau[lignes][colonnes][2], int vide[2])
+/* Permet de trouver la case vide du tableau, inclus ses coordonnées dans le tableau 'vide' */
 /* Permet de trouver la case vide du tableau, inclus ses coordonnées dans le tableau 'vide' */
 {
     for (int i = 0; i < lignes; i++)
@@ -92,15 +105,21 @@ void findEmpty(int lignes, int colonnes, int tableau[lignes][colonnes][2], int v
 
 void pointCounter(int lignes, int colonnes, int tableau[lignes][colonnes][2], int points[2], int vide[2])
 /* Permet de compter les points (les huits cases autour de la case vide), inclus la somme des points de chaque joueur dans le tableau points (index 0 = joueur 1, index 1 = joueur 2)*/
+/* Permet de compter les points (les huits cases autour de la case vide), inclus la somme des points de chaque joueur dans le tableau points (index 0 = joueur 1, index 1 = joueur 2)*/
 {
+    int comb[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}}; // toutes les combinaisons possible pour faire un carré de 3x3 avec la case vide en son centre
     int comb[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}}; // toutes les combinaisons possible pour faire un carré de 3x3 avec la case vide en son centre
 
     for (int i = 0; i < 8; i++)
     {
         if (vide[0] + comb[i][0] >= 0 && vide[0] + comb[i][0] < lignes && vide[1] + comb[i][1] >= 0 && vide[1] + comb[i][1] < colonnes) // condition qui permet de vérifier qu'on ne sort pas du tableau
+        if (vide[0] + comb[i][0] >= 0 && vide[0] + comb[i][0] < lignes && vide[1] + comb[i][1] >= 0 && vide[1] + comb[i][1] < colonnes) // condition qui permet de vérifier qu'on ne sort pas du tableau
         {
             if (tableau[vide[0]+comb[i][0]][vide[1]+comb[i][1]][0] == 1) // vérfie si le joueur de la n-ième lignes et de la n-ième colonnes par rapport à la case vice est le joueur 1
+            if (tableau[vide[0]+comb[i][0]][vide[1]+comb[i][1]][0] == 1) // vérfie si le joueur de la n-ième lignes et de la n-ième colonnes par rapport à la case vice est le joueur 1
             {
+                points[0] = points[0] + tableau[vide[0]+comb[i][0]][vide[1]+comb[i][1]][1]; // si oui on lui attribue les points
+            } else // sinon on attribue les points au joueur 2
                 points[0] = points[0] + tableau[vide[0]+comb[i][0]][vide[1]+comb[i][1]][1]; // si oui on lui attribue les points
             } else // sinon on attribue les points au joueur 2
             {
@@ -160,6 +179,7 @@ int main()
                     } else
                     {
                         break; // si aucune condition n'est validé, il n'y pas d'erreur, on peut sortir de la boucle
+                        break; // si aucune condition n'est validé, il n'y pas d'erreur, on peut sortir de la boucle
                     }
                 } else{
                     printf("\nLe numéro saisi est incorrect.");
@@ -175,13 +195,17 @@ int main()
 
     int tableau[lignes][colonnes][2]; // création du tableau
     memset(tableau, 0 , lignes*colonnes*2*sizeof(int)); // on alloue de l'espace et on initialise tout à 0
+    int tableau[lignes][colonnes][2]; // création du tableau
+    memset(tableau, 0 , lignes*colonnes*2*sizeof(int)); // on alloue de l'espace et on initialise tout à 0
     tour = (lignes * colonnes - 1) / 2;
 
     printf("\nChaque joueur a %d jetons.", tour);
     Sleep(2000);
     
     while (jeton <= tour) // boucle de jeu principal
+    while (jeton <= tour) // boucle de jeu principal
     {
+        turn = 0; // permet de traquer le tour actuel (première boucle = joueur 1, 2ème boucle = joueur 2, puis on recommence)
         turn = 0; // permet de traquer le tour actuel (première boucle = joueur 1, 2ème boucle = joueur 2, puis on recommence)
 
         while (turn < 2)
@@ -224,14 +248,17 @@ int main()
                 } else
                 {
                     break; // si aucune condition n'est vérifié, tout est correct, on peut sortir de la boucle
+                    break; // si aucune condition n'est vérifié, tout est correct, on peut sortir de la boucle
                 }
             }
         
+            /* On assigne le jeton et le joueur au tableau  */
             /* On assigne le jeton et le joueur au tableau  */
             tableau[case_ligne-1][case_colonne-1][0] = turn;
             tableau[case_ligne-1][case_colonne-1][1] = jeton;
 
         }
+        jeton++; // au incrémente la valeur du jeton, chaque tour la valeur augmente jusqu'au dernier.
         jeton++; // au incrémente la valeur du jeton, chaque tour la valeur augmente jusqu'au dernier.
     }
 
@@ -239,12 +266,14 @@ int main()
     arrayPrint(lignes, colonnes, tableau);
     
     int vide[2], points[2] = {0}; // on initialise les tableaux qui vont contenir les coordonnées de la case vide et les points de joueurs
+    int vide[2], points[2] = {0}; // on initialise les tableaux qui vont contenir les coordonnées de la case vide et les points de joueurs
 
     findEmpty(lignes, colonnes, tableau, vide);
     pointCounter(lignes, colonnes, tableau, points, vide);
 
     printf("Le joueur %s a : %d points\nle joueur %s a : %d points\n", joueur1, points[0], joueur2, points[1]);
 
+    // On compare les points des joueurs pour savoir qui a gagner, celui qui en a le moins l'emporte
     // On compare les points des joueurs pour savoir qui a gagner, celui qui en a le moins l'emporte
     if (points[0] > points[1]) {
         printf(" %s remporte la partie !\n", joueur1);
